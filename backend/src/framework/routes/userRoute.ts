@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateUserController, injectedUserLoginController } from "../DI/userDI";
+import { injectedCreateUserController, injectedSendOtpController, injectedUserLoginController, injectedVerifyOtpUseCase } from "../DI/userDI";
 
 export class UserRoute {
     public userRoute: Router
@@ -8,11 +8,17 @@ export class UserRoute {
         this.setRoute()
     }
     private setRoute() {
-        this.userRoute.post('/register', (req: Request, res: Response) => {
+        this.userRoute.post('/createUser', (req: Request, res: Response) => {
             injectedCreateUserController.handleCreateUser(req, res)
         })
         this.userRoute.post('/login', (req: Request, res: Response) => {
             injectedUserLoginController.handleUserLogin(req, res)
+        })
+        this.userRoute.post('/sendOtp', (req: Request, res: Response) => {
+            injectedSendOtpController.handleSendOtp(req, res)
+        })
+        this.userRoute.post('/verifyOtp', (req: Request, res: Response) => {
+            injectedVerifyOtpUseCase.handleVerifyOtpUser(req, res)
         })
     }
 }

@@ -1,14 +1,32 @@
 import { CreateUserController } from "../../adapters/controllers/user/createUserController";
 import { LoginUserController } from "../../adapters/controllers/user/loginUserController";
+import { SendOtpUserController } from "../../adapters/controllers/user/sendOtpUserController";
+import { VerifyOtpUserController } from "../../adapters/controllers/user/verifyOtpUserController";
 import { UserRepository } from "../../adapters/repository/userRepository";
 import { CreateUseCase } from "../../useCases/user/createUserUseCase";
 import { LoginUserUseCase } from "../../useCases/user/loginUserUseCase";
+import { SendOtpUseCase } from "../../useCases/user/sendOtpUseCase";
+import { VerifyOtpUseCase } from "../../useCases/user/verifyEmailOtpUseCase";
+import { emailService } from "../services/emailService";
+import { OtpService } from "../services/otpService";
+
 
 
 //----------------------------------------------User creation----------------------
 const userDatabase = new UserRepository()
 const createUserUseCase = new CreateUseCase(userDatabase)
 export const injectedCreateUserController = new CreateUserController(createUserUseCase)
+
+//-------------------------------------send otp-----------------------
+const otpService = new OtpService()
+const EmailService = new emailService()
+const sendOtpUseCase = new SendOtpUseCase(otpService, EmailService, userDatabase)
+export const injectedSendOtpController = new SendOtpUserController(sendOtpUseCase)
+
+//----------------------------------verify otp-----------------------
+const verifyOtpUseCase = new VerifyOtpUseCase(otpService)
+export const injectedVerifyOtpUseCase = new VerifyOtpUserController(verifyOtpUseCase)
+
 
 //----------------------------------------------User Login--------------------
 const loginUserUseCase = new LoginUserUseCase(userDatabase)

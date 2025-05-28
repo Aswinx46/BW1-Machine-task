@@ -4,18 +4,18 @@ import * as Yup from 'yup';
 import type { LoginType } from "@/types/loginTypes";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useUserLogin } from "@/hooks/userHooks";
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux'
 import { addUser } from "@/store/slices/user/userSlice";
+import { Link } from "react-router-dom";
+import { userLogin } from "@/services/user/userServices";
 const initialValues = {
   email: '',
   password: ''
 }
 function Login() {
-
+  const [loading,setLoading]=useState<boolean>(false)
   const [showPassword, setShowPassword] = useState(false);
-  const { data, error, handleLogin, loading } = useUserLogin()
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -35,17 +35,20 @@ function Login() {
   //   console.log(values)
   // }
 
-  const login = (values: LoginType) => {
-    handleLogin(values.email, values.password)
-    if (error) toast.error(error)
-    console.log(data)
-    if (data) toast.success(data.message)
-    dispatch(addUser(data?.user))
+  const login = async (values: LoginType) => {
+    try {
+      setLoading(true)
+      const loginResponse = await userLogin(values.email, values.password)
+      toast.success(loginResponse.message)
+      dispatch(addUser(loginResponse.user))
+    } catch (error) {
+      setLoading(false)
+      console.log('error while user login', error)
+      if (error instanceof Error) toast.error(error.message)
+    }
   }
 
-  if (loading) {
-    return <div>LOADING......</div>
-  }
+
 
   return (
     <>
@@ -86,8 +89,12 @@ function Login() {
                 component="div"
                 className="text-red-500 text-sm"
               />
-              <Button type="submit" className="bg-white mt-10 text-black">LOGIN</Button>
+              <Button type="submit" className="bg-white mt-10 text-black">{loading ? 'Logining...' : 'Login'}</Button>
             </Form>
+            <div className="flex">
+              <p className="text-white pe-3">Dont have a account signup here</p>
+              <Link className=" text-blue-500" to={'/signUp'}>SIGNUP</Link>
+            </div>
           </div>
         </div>
       </Formik>
