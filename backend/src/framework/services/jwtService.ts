@@ -3,10 +3,11 @@ import { IjwtService } from "../../domain/interface/serviceInterfaces/IjwtServic
 import jwt from "jsonwebtoken";
 export class JwtService implements IjwtService {
     createAccessToken(accessSecretkey: string, userId: string): string {
-        return jwt.sign(userId, accessSecretkey, { expiresIn: '15m' })
+        // return jwt.sign(userId, accessSecretkey, { expiresIn: '15m' })
+        return jwt.sign({ userId }, accessSecretkey, { expiresIn: '15m' });
     }
     createRefreshToken(refreshSercretKey: string, userId: string): string {
-        return jwt.sign(refreshSercretKey, userId, { expiresIn: '1d' })
+        return jwt.sign({ userId }, refreshSercretKey, { expiresIn: '1d' });
     }
     tokenDecode(accessToken: string): decodedTokenEntity | null {
         return jwt.decode(accessToken) as decodedTokenEntity

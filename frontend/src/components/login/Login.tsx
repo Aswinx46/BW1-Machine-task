@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux'
 import { addUser } from "@/store/slices/user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "@/services/user/userServices";
+import { addToken } from "@/store/slices/token/tokenSlice";
 const initialValues = {
   email: '',
   password: ''
@@ -41,6 +42,7 @@ function Login() {
       const loginResponse = await userLogin(values.email, values.password)
       toast.success(loginResponse.message)
       dispatch(addUser(loginResponse.user))
+      dispatch(addToken(loginResponse.accessToken))
       navigate('/dashboard')
     } catch (error) {
       setLoading(false)

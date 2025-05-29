@@ -79,3 +79,13 @@ export const updateKyc = async (email: string, kyc: string, type: 'image' | 'vid
         throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while updaitng kyc')
     }
 }
+
+export const userLogout = async () => {
+    try {
+        const response = await axios.post('/logout')
+        return response.data
+    } catch (error) {
+        console.log('error while user logout', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while user logout')
+    }
+}

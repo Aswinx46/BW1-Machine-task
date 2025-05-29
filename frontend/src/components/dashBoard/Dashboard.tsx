@@ -1,21 +1,32 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import CameraCapture from '../otherComponents/cameraComponent/CameraCapture'
 import type { RootState } from '@/store/store'
-import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
+import { userLogout } from '@/services/user/userServices'
+import { Button } from '../ui/button'
+import { removeUser } from '@/store/slices/user/userSlice'
+import { removeToken } from '@/store/slices/token/tokenSlice'
 
 function Dashboard() {
 
     const user = useSelector((state: RootState) => state.user.user)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     if (!user) {
-        toast.error("Please Login")
+        // toast.error("Please Login")
         navigate('/')
         return
+    }
+    const handleLogout = async () => {
+        userLogout()
+        dispatch(removeUser(null))
+        dispatch(removeToken(null))
+        navigate('/')
     }
     return (
         <div className='bg-black w-full h-screen flex flex-col justify-center items-center overflow-y-scroll'>
             <div className=''>
+                <Button className='bg-red-500 hover:bg-red-400' onClick={handleLogout}>LOGOUT</Button>
                 <h1 className='text-white mb-10 font-semibold text-center'>CURRENT UPDATED DOCUMENT</h1>
                 {user.kycType == 'image' ? <img src={user.kyc} className='object-cover'></img> : <video
                     autoPlay
