@@ -7,14 +7,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux'
 import { addUser } from "@/store/slices/user/userSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userLogin } from "@/services/user/userServices";
 const initialValues = {
   email: '',
   password: ''
 }
 function Login() {
-  const [loading,setLoading]=useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch()
   const LoginSchema = Yup.object().shape({
@@ -31,9 +31,9 @@ function Login() {
       .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Must contain at least one special character'),
   });
 
-  // const handleLogin = async (values: LoginType) => {
-  //   console.log(values)
-  // }
+
+
+  const navigate = useNavigate()
 
   const login = async (values: LoginType) => {
     try {
@@ -41,6 +41,7 @@ function Login() {
       const loginResponse = await userLogin(values.email, values.password)
       toast.success(loginResponse.message)
       dispatch(addUser(loginResponse.user))
+      navigate('/dashboard')
     } catch (error) {
       setLoading(false)
       console.log('error while user login', error)

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateUserController, injectedSendOtpController, injectedUserLoginController, injectedVerifyOtpUseCase } from "../DI/userDI";
+import { injectedCreateUserController, injectedSendOtpController, injectedUpdateKycController, injectedUserLoginController, injectedVerifyOtpUseCase } from "../DI/userDI";
 
 export class UserRoute {
     public userRoute: Router
@@ -19,6 +19,9 @@ export class UserRoute {
         })
         this.userRoute.post('/verifyOtp', (req: Request, res: Response) => {
             injectedVerifyOtpUseCase.handleVerifyOtpUser(req, res)
+        })
+        this.userRoute.post('/updateKyc', (req: Request, res: Response) => {
+            injectedUpdateKycController.handleUpdateKyc(req, res)
         })
     }
 }

@@ -13,5 +13,10 @@ export const userSchema = new Schema<UserType>({
     kyc: {
         type: String,
         required: false
+    },
+    kycType: {
+        type: String,
+        enum: ["image", "video"],
+        required: false
     }
 })

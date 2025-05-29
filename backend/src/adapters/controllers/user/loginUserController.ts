@@ -10,8 +10,8 @@ export class LoginUserController {
     async handleUserLogin(req: Request, res: Response): Promise<void> {
         try {
             const { email, password } = req.body
-            await this.loginUserUseCase.loginUser(email, password)
-            res.status(HttpStatus.OK).json({ message: "User Logged In" })
+            const user = await this.loginUserUseCase.loginUser(email, password)
+            res.status(HttpStatus.OK).json({ message: "User Logged In", user })
         } catch (error) {
             console.log('error in userLogin controller while logining user', error)
             res.status(HttpStatus.BAD_REQUEST).json({

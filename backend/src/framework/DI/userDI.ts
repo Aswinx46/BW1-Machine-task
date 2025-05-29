@@ -1,11 +1,13 @@
 import { CreateUserController } from "../../adapters/controllers/user/createUserController";
 import { LoginUserController } from "../../adapters/controllers/user/loginUserController";
 import { SendOtpUserController } from "../../adapters/controllers/user/sendOtpUserController";
+import { UpdateKycController } from "../../adapters/controllers/user/updateKycController";
 import { VerifyOtpUserController } from "../../adapters/controllers/user/verifyOtpUserController";
 import { UserRepository } from "../../adapters/repository/userRepository";
 import { CreateUseCase } from "../../useCases/user/createUserUseCase";
 import { LoginUserUseCase } from "../../useCases/user/loginUserUseCase";
 import { SendOtpUseCase } from "../../useCases/user/sendOtpUseCase";
+import { UpdateKycUseCase } from "../../useCases/user/updateKyc";
 import { VerifyOtpUseCase } from "../../useCases/user/verifyEmailOtpUseCase";
 import { emailService } from "../services/emailService";
 import { OtpService } from "../services/otpService";
@@ -31,3 +33,7 @@ export const injectedVerifyOtpUseCase = new VerifyOtpUserController(verifyOtpUse
 //----------------------------------------------User Login--------------------
 const loginUserUseCase = new LoginUserUseCase(userDatabase)
 export const injectedUserLoginController = new LoginUserController(loginUserUseCase)
+
+//-----------------------------------update Kyc------------------
+const updateKycUseCase = new UpdateKycUseCase(userDatabase)
+export const injectedUpdateKycController = new UpdateKycController(updateKycUseCase)
