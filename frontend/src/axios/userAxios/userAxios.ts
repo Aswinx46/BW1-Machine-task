@@ -24,6 +24,7 @@ instance.interceptors.response.use(response => response,
     async (error: AxiosError) => {
         const originalRequest = error.config as CustomAxiosRequestConfig
         if (error.response?.status == 401 && !originalRequest._retry) {
+            originalRequest._retry=true
             try {
                 const refreshResponse = await instance.post('/refreshToken', {}, { withCredentials: true })
                 const newAccessToken = refreshResponse.data.newAccessToken;
