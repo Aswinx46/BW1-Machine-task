@@ -1,4 +1,4 @@
-import { decodedTokenEntity } from "../entities/decodedTokenEntity";
+import { decodedTokenEntity } from "../../entities/decodedTokenEntity";
 
 export interface IjwtService {
     createAccessToken(accessSecretkey: string, userId: string): string
