@@ -25,8 +25,10 @@ function Dashboard() {
     }
     return (
         <div className='bg-black w-full h-screen flex flex-col justify-center items-center overflow-y-scroll'>
-            <div className=''>
+            <div className='flex justify-end'>
                 <Button className='bg-red-500 hover:bg-red-400' onClick={handleLogout}>LOGOUT</Button>
+            </div>
+            <div>
                 <h1 className='text-white mb-10 font-semibold text-center'>CURRENT UPDATED DOCUMENT</h1>
                 {user.kycType == 'image' ? <img src={user.kyc} className='object-cover'></img> : <video
                     autoPlay

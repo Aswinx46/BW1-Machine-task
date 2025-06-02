@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
-import { injectedCreateUserController, injectedSendOtpController, injectedUpdateKycController, injectedUserLoginController, injectedUserLogoutController, injectedVerifyOtpUseCase } from "../DI/userDI";
+import { injectedCreateUserController, injectedRefreshTokenController, injectedSendOtpController, injectedUpdateKycController, injectedUserLoginController, injectedUserLogoutController, injectedVerifyOtpUseCase } from "../DI/userDI";
+import { injectedTokenMiddleware } from "../DI/middlewareDI";
 
 export class UserRoute {
     public userRoute: Router
@@ -20,11 +21,14 @@ export class UserRoute {
         this.userRoute.post('/verifyOtp', (req: Request, res: Response) => {
             injectedVerifyOtpUseCase.handleVerifyOtpUser(req, res)
         })
-        this.userRoute.post('/updateKyc', (req: Request, res: Response) => {
+        this.userRoute.post('/updateKyc', injectedTokenMiddleware, (req: Request, res: Response) => {
             injectedUpdateKycController.handleUpdateKyc(req, res)
         })
-        this.userRoute.post('/logout', (req: Request, res: Response) => {
+        this.userRoute.post('/logout', injectedTokenMiddleware, (req: Request, res: Response) => {
             injectedUserLogoutController.handleUserLogout(req, res)
+        })
+        this.userRoute.post('/refreshToken',  (req: Request, res: Response) => {
+            injectedRefreshTokenController.handleRefreshToken(req, res)
         })
     }
 }

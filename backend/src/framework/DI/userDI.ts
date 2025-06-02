@@ -1,5 +1,6 @@
 import { CreateUserController } from "../../adapters/controllers/user/createUserController";
 import { LoginUserController } from "../../adapters/controllers/user/loginUserController";
+import { RefreshTokenController } from "../../adapters/controllers/user/refreshTokenController";
 import { SendOtpUserController } from "../../adapters/controllers/user/sendOtpUserController";
 import { UpdateKycController } from "../../adapters/controllers/user/updateKycController";
 import { UserLogoutController } from "../../adapters/controllers/user/userLogoutController";
@@ -45,3 +46,6 @@ export const injectedUpdateKycController = new UpdateKycController(updateKycUseC
 //----------------------------- user logout --------------------
 const userLogout = new UserLogoutUseCase(jwtService)
 export const injectedUserLogoutController = new UserLogoutController(userLogout)
+
+//---------------------refresh token -----------------------
+export const injectedRefreshTokenController = new RefreshTokenController(jwtService)
